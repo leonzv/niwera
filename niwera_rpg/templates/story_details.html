@@ -6,7 +6,31 @@
     <h2>Personagens Conectados</h2>
     <ul>
         {% for character in connected_characters %}
-        <li>{{ character.name }} - HP: {{ character.hp }} - XP: {{ character.xp }}</li>
+        <li data-character-id="{{ character.id }}">{{ character.name }} - HP: {{ character.hp }} - XP:
+            {{ character.xp }}</li>
         {% endfor %}
     </ul>
+    <script>
+        function disconnect_user() {
+            const socket = new WebSocket(`ws://${window.location.host}/ws/stories/{{ story.id }}/`);
+            socket.onopen = function (event) {
+                console.log('WebSocket connection opened.');
+                const data = {
+                    'action': 'disconnect_user',
+                    'character_id': '1',
+                    'story_id': '{{ story.id }}'
+                };
+                socket.send(JSON.stringify(data));
+                window.location.href = `/stories/`;
+            };
+            socket.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+                console.log(data);
+            };
+            socket.onclose = function (event) {
+                console.log('WebSocket connection closed.');
+            };
+        }
+    </script>
+    <button id="discconectButton" onclick="disconnect_user()">Sair da História</button>
 </div>

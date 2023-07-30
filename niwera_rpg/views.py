@@ -1,10 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from .models import Story
+from django.contrib.auth import logout, authenticate, login
 
 
 def home(request):
     return render(request, 'home.html')
+
+
+def logout(request):
+    logout(request)
 
 
 def stories(request):
