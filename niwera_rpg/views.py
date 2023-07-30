@@ -3,6 +3,10 @@ from django.http import HttpResponse
 from .models import Story
 
 
+def home(request):
+    return render(request, 'home.html')
+
+
 def stories(request):
 
     stories = Story.objects.all()
@@ -14,7 +18,11 @@ def stories(request):
 
 
 def story_details(request, story_id):
-    story_data = {...}  # Dados da história
-    connected_characters = [...]  # Lista de personagens conectados
+    story = Story.objects.get(id=story_id)
+    connected_characters = story.character_set.all()
 
-    return render(request, 'story_details.html', {'story_data': story_data, 'connected_characters': connected_characters})
+    context = {
+        'story': story,
+        'connected_characters': connected_characters
+    }
+    return render(request, 'story_details.html', context)

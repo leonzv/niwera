@@ -22,21 +22,22 @@
     </div>
 
     <script>
-        // Função para enviar o ID da história ao servidor quando o jogador clicar no botão "Entrar na História"
         function joinStory(storyId) {
             console.log(`Joining story ${storyId}...`);
-            const socket = new WebSocket(
-                `ws://${window.location.host}/niwera/stories/${storyId}/`);
+            const socket = new WebSocket(`ws://${window.location.host}/ws/stories/${storyId}/`);
 
             socket.onopen = function (event) {
                 console.log('WebSocket connection opened.');
-                // Aqui você pode enviar informações adicionais, como o ID do jogador, para autenticação/autorização no servidor
+
                 const data = {
-                    action: 'join_story',
-                    player_id: 'player123',
-                    story_id: storyId
+                    'action': 'join',
+                    'character_id': '1',
+                    'story_id': storyId
                 };
+
                 socket.send(JSON.stringify(data));
+
+                window.location.href = `/stories/${storyId}/`;
             };
 
             socket.onmessage = function (event) {

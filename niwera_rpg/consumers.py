@@ -5,12 +5,14 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 class StoryConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Lógica de autenticação e autorização, se necessário
-        print('Conectado')
         await self.accept()
+        print('Conectado')
+        self.send(text_data=json.dumps({'message': 'Conectado'}))
 
     async def disconnect(self, close_code):
         # Lógica de desconexão, se necessário
-        print('Desconectado')
+        await self.close()
+        self.send(text_data=json.dumps({'message': 'Desconectado'}))
         pass
 
     async def receive(self, text_data):
@@ -20,14 +22,14 @@ class StoryConsumer(AsyncWebsocketConsumer):
         print('Received WebSocket message:', text_data)
         action = data.get('action')
 
-        if action == 'join_story':
+        if action == 'join':
             # Lógica para processar a solicitação do cliente e enviar os dados da história
             story_id = data.get('story_id')
             # ... (obter os dados da história e personagens conectados)
 
             # Exemplo: enviar os dados da história de volta ao cliente
             response_data = {
-                'action': 'join_story',
+                'action': 'join',
                 'story_id': story_id,
                 'story_data': {...},  # Dados da história aqui
                 # Lista de personagens conectados aqui

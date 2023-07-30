@@ -1,25 +1,12 @@
-<!-- story_details.html -->
-<!DOCTYPE html>
-<html>
+<div class="container">
+    <h1>Detalhes da História</h1>
+    <h2>{{ story.title }}</h2>
+    <p>{{ story.description }}</p>
 
-<head>
-    <!-- Importar as dependências do Bootstrap e outros estilos, se necessário -->
-    <!-- ... -->
-</head>
-
-<body>
-    <div class="container">
-        <h1>Detalhes da História</h1>
-        <h2>{{ story_data.title }}</h2>
-        <p>{{ story_data.description }}</p>
-
-        <h2>Personagens Conectados</h2>
-        <ul>
-            {% for character in connected_characters %}
-            <li>{{ character.name }} - HP: {{ character.hp }} - XP: {{ character.xp }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-</body>
-
-</html>
+    <h2>Personagens Conectados</h2>
+    <ul>
+        {% for character in connected_characters %}
+        <li>{{ character.name }} - HP: {{ character.hp }} - XP: {{ character.xp }}</li>
+        {% endfor %}
+    </ul>
+</div>
