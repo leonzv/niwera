@@ -1,0 +1,55 @@
+<!-- stories.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Importar as dependências do Bootstrap e outros estilos -->
+    <!-- ... -->
+</head>
+
+<body>
+    <div class="container">
+        <h1>Histórias Disponíveis:</h1>
+        {% for story in stories %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ story.title }}</h5>
+                <p class="card-text">{{ story.description }}</p>
+                <a href="#" class="btn btn-primary" onclick="joinStory({{ story.id }})">Entrar na História</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Função para enviar o ID da história ao servidor quando o jogador clicar no botão "Entrar na História"
+        function joinStory(storyId) {
+            console.log(`Joining story ${storyId}...`);
+            const socket = new WebSocket(
+                `ws://${window.location.host}/niwera/stories/${storyId}/`);
+
+            socket.onopen = function (event) {
+                console.log('WebSocket connection opened.');
+                // Aqui você pode enviar informações adicionais, como o ID do jogador, para autenticação/autorização no servidor
+                const data = {
+                    action: 'join_story',
+                    player_id: 'player123',
+                    story_id: storyId
+                };
+                socket.send(JSON.stringify(data));
+            };
+
+            socket.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+                // Manipular os dados recebidos do servidor (informações de personagens e pessoas conectadas)
+                console.log(data);
+            };
+
+            socket.onclose = function (event) {
+                console.log('WebSocket connection closed.');
+            };
+        }
+    </script>
+</body>
+
+</html>

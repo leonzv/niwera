@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-9tcsb=n-ebsh-9z(wqe&&2sqxsd_5*c=j_)uau^&9)1j4dlpl&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1'
+]
 
 
 # Application definition
@@ -37,8 +40,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'niwera_rpg'
+    'niwera_rpg',
+    'channels'
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "asgi_redis.RedisChannelLayer",
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
+        },
+        'ROUTING': 'niwera_rpg.routing.channel_routing',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -68,7 +82,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'niwera.wsgi.application'
+ASGI_APPLICATION = 'niwera.asgi.application'
 
 
 # Database
